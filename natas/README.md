@@ -56,7 +56,8 @@ Vậy là có pass.
 
 `Natas level 6`:
  Vào web thì có source:
- `<html>
+ ```php
+ <html>
 <head>
 <!-- This stuff in the header has nothing to do with the level -->
 <link rel="stylesheet" type="text/css" href="http://natas.labs.overthewire.org/css/level.css">
@@ -91,4 +92,5 @@ Input secret: <input name=secret><br>
 <div id="viewsource"><a href="index-source.html">View sourcecode</a></div>
 </div>
 </body>
-</html>`
+</html>
+```
