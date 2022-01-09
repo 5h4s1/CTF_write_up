@@ -94,3 +94,19 @@ Input secret: <input name=secret><br>
 </body>
 </html>
 ```
+thấy code có include "includes/secret.inc", truy cập vào đó là có secret:
+
+![image](https://user-images.githubusercontent.com/96786536/148688758-43c45e4a-6195-4c6b-8822-abbfa8524877.png)
+
+lụm pass thôi :)
+
+`Natas level 7`:
+
+![image](https://user-images.githubusercontent.com/96786536/148688811-e46fddad-3839-49a1-9600-df495dbe6b8d.png)
+
+nhìn url nghi nghi là LFI rồi, check source thì có hint, rồi thay `/etc/natas_webpass/natas8` vào url là có pass thôi:
+
+![image](https://user-images.githubusercontent.com/96786536/148688874-fc826194-fcc1-41c1-af57-e0827bb7e807.png)
+
+
+
