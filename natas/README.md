@@ -1,14 +1,3 @@
-`Natas level 0`:
-
-Đây là chall khá đơn giản chỉ cần check `source` là se xuất hiện password ở đó:
-
-![image](https://user-images.githubusercontent.com/96786536/147642324-378365b2-1248-4df3-8c82-49eb495da2d4.png)
-
-`Natas level 1`:
-
-Chall này giống với chall đầu tiên chỉ cần check `sourrce` là ra nhưng web đã chặn click chuột phải, chúng ta có thể dùng `CTRL + U` để xem `source`:
-
-![image](https://user-images.githubusercontent.com/96786536/147642593-ae111bb8-7784-4645-b462-0f965de4e62a.png)
 
 `Natas level 2`:
 
@@ -108,5 +97,156 @@ nhìn url nghi nghi là LFI rồi, check source thì có hint, rồi thay `/etc/
 
 ![image](https://user-images.githubusercontent.com/96786536/148688874-fc826194-fcc1-41c1-af57-e0827bb7e807.png)
 
+`Natas level 8`:
 
+Source:
+
+```php
+ <html>
+<head>
+<!-- This stuff in the header has nothing to do with the level -->
+<link rel="stylesheet" type="text/css" href="http://natas.labs.overthewire.org/css/level.css">
+<link rel="stylesheet" href="http://natas.labs.overthewire.org/css/jquery-ui.css" />
+<link rel="stylesheet" href="http://natas.labs.overthewire.org/css/wechall.css" />
+<script src="http://natas.labs.overthewire.org/js/jquery-1.9.1.js"></script>
+<script src="http://natas.labs.overthewire.org/js/jquery-ui.js"></script>
+<script src=http://natas.labs.overthewire.org/js/wechall-data.js></script><script src="http://natas.labs.overthewire.org/js/wechall.js"></script>
+<script>var wechallinfo = { "level": "natas8", "pass": "<censored>" };</script></head>
+<body>
+<h1>natas8</h1>
+<div id="content">
+
+<?
+
+$encodedSecret = "3d3d516343746d4d6d6c315669563362";
+
+function encodeSecret($secret) {
+    return bin2hex(strrev(base64_encode($secret)));
+}
+
+if(array_key_exists("submit", $_POST)) {
+    if(encodeSecret($_POST['secret']) == $encodedSecret) {
+    print "Access granted. The password for natas9 is <censored>";
+    } else {
+    print "Wrong secret";
+    }
+}
+?>
+
+<form method=post>
+Input secret: <input name=secret><br>
+<input type=submit name=submit>
+</form>
+
+<div id="viewsource"><a href="index-source.html">View sourcecode</a></div>
+</div>
+</body>
+</html>
+```
+Chú ý vào function `encodeSecret`, dịch ngược lại là có secret:
+
+![image](https://user-images.githubusercontent.com/96786536/148689206-8f62255c-f4a9-4ce2-b62d-8d8cbd25f028.png)
+
+`Natas level 9:`
+
+Source:
+
+```php
+ <html>
+<head>
+<!-- This stuff in the header has nothing to do with the level -->
+<link rel="stylesheet" type="text/css" href="http://natas.labs.overthewire.org/css/level.css">
+<link rel="stylesheet" href="http://natas.labs.overthewire.org/css/jquery-ui.css" />
+<link rel="stylesheet" href="http://natas.labs.overthewire.org/css/wechall.css" />
+<script src="http://natas.labs.overthewire.org/js/jquery-1.9.1.js"></script>
+<script src="http://natas.labs.overthewire.org/js/jquery-ui.js"></script>
+<script src=http://natas.labs.overthewire.org/js/wechall-data.js></script><script src="http://natas.labs.overthewire.org/js/wechall.js"></script>
+<script>var wechallinfo = { "level": "natas9", "pass": "<censored>" };</script></head>
+<body>
+<h1>natas9</h1>
+<div id="content">
+<form>
+Find words containing: <input name=needle><input type=submit name=submit value=Search><br><br>
+</form>
+
+
+Output:
+<pre>
+<?
+$key = "";
+
+if(array_key_exists("needle", $_REQUEST)) {
+    $key = $_REQUEST["needle"];
+}
+
+if($key != "") {
+    passthru("grep -i $key dictionary.txt");
+}
+?>
+</pre>
+
+<div id="viewsource"><a href="index-source.html">View sourcecode</a></div>
+</div>
+</body>
+</html>
+
+```
+Đây là bài command injection.
+Payload: `; cat /etc/natas_webpass/natas10`, có nghĩa là dấu ; sẽ kết thúc một dòng command, viết thêm gì đằng sau đó sẽ là command mới.
+Pass: nOpp1igQAkUzaI1GUUjzn1bFVj7xCNzu.
+
+`Natas level 10:`
+
+Source:
+
+```php
+ <html>
+<head>
+<!-- This stuff in the header has nothing to do with the level -->
+<link rel="stylesheet" type="text/css" href="http://natas.labs.overthewire.org/css/level.css">
+<link rel="stylesheet" href="http://natas.labs.overthewire.org/css/jquery-ui.css" />
+<link rel="stylesheet" href="http://natas.labs.overthewire.org/css/wechall.css" />
+<script src="http://natas.labs.overthewire.org/js/jquery-1.9.1.js"></script>
+<script src="http://natas.labs.overthewire.org/js/jquery-ui.js"></script>
+<script src=http://natas.labs.overthewire.org/js/wechall-data.js></script><script src="http://natas.labs.overthewire.org/js/wechall.js"></script>
+<script>var wechallinfo = { "level": "natas10", "pass": "<censored>" };</script></head>
+<body>
+<h1>natas10</h1>
+<div id="content">
+
+For security reasons, we now filter on certain characters<br/><br/>
+<form>
+Find words containing: <input name=needle><input type=submit name=submit value=Search><br><br>
+</form>
+
+
+Output:
+<pre>
+<?
+$key = "";
+
+if(array_key_exists("needle", $_REQUEST)) {
+    $key = $_REQUEST["needle"];
+}
+
+if($key != "") {
+    if(preg_match('/[;|&]/',$key)) {
+        print "Input contains an illegal character!";
+    } else {
+        passthru("grep -i $key dictionary.txt");
+    }
+}
+?>
+</pre>
+
+<div id="viewsource"><a href="index-source.html">View sourcecode</a></div>
+</div>
+</body>
+</html>
+```
+Cũng vẫn là command injection nhưng bị filter r:
+Payload: `1 /etc/natas_webpass/natas11`. Giải thích chút là lệnh grep sẽ tìm kí tự '1' trong file /etc/natas_webpass/natas11 và dictionary.txt.
+Password: U82q5TCMMQ9xuFoI3dYX61s7OZD9JKoK
+
+`Natas level 11:`
 
