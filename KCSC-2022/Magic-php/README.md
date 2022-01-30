@@ -25,7 +25,7 @@ Nghiên cứu 1 lúc thì có Payload: `pHp://FilTer/convert.base64-encode/resou
 	}
 ?>
 ```
-Để echi $flag thì cần bypass user và pass.<br>
+Để echo $flag thì cần bypass user và pass.<br>
 User thì bypass dễ rỗi, chỉ cần sử dụng 1 chuỗi mà sau khi md5 thành 1 chuỗi mới có `0e` ở đầu là được.<br>
 Pass thì có vẻ khó hơn, sau 1 hồi hỏi anh Google thì thấy có lỗi ở hàm exreact. Các bạn có thể tham khảo ở đây: https://davidnoren.com/post/php-extract-vulnerability/<br>
 
