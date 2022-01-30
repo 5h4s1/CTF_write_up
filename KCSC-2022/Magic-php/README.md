@@ -1,4 +1,4 @@
-Vào thì được Form Login.<br>
+Sau khi vào Form thì mình được trang Login.<br>
 Để ý ở dưới có dòng `Flag here ?`, ấn vào thử thì thấy đâu đó bóng dáng thấy Huấn.<br>
 Ok, fine.<br>
 Tiếp tục nhìn lên url trông có vẻ giống bị LFI, và đúng thật, nhưng bị filter r.<br>
