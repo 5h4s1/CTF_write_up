@@ -36,6 +36,22 @@ Thấy không ổn nên bật `Burp suite` lên để chặn request `/flag` xem
 
 FLAG: `flag{g3t_cur1ed}`
 
+# Piece It Together
+
+Đề bài:
+
+![image](https://user-images.githubusercontent.com/96786536/154810281-959baa7d-a63d-4a0b-8021-78c3d25f141e.png)
+
+Đọc đầu bài thì bài này có vẻ là source đã bị mã hóa.
+
+Xem source thì đúng như vậy, code có vẻ rất loằng ngoằng, rồi tra Google xem đây là loại mã hóa gì thì chả thấy gì, Ngại không tìm nữa, nghĩ cách khác, chúng ta có thể sử dụng hàm toString để đọc được hàm `checkpwd()` dưới dạng String.
+
+Có code của hàm `checkpwd()` rồi tìm tiếp array `_0xa8fe` vì mình thấy hàm `checkpwd` có liên quan đến mảng này. Lọ mọ mãi rồi cũng ra được flag:
+
+![image](https://user-images.githubusercontent.com/96786536/154810514-97a5e102-877e-40cc-b61d-82d5016fdf99.png)
+
+FLAG: `flag{j1gs4w}`
+
 # Cuppa Joe
 
 Đề bài:
