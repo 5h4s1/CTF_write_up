@@ -7,6 +7,17 @@
 Có nghĩa là mình làm sao để đăng nhập vào được là được:
 
 Vào trang thì thấy có phần nhập pass để Login, check `source` thấy có 1 đoạn `JS` check value password, nếu giá trị của password là `this_is_a_really_secure_password` thì sẽ chuyển sang trang `/weirdpage.php?pwd=doublepassword`.
+`source check pass`:
+```js
+    <script>
+      function validatepwd() {
+        var x = document.getElementById("pwd").value;
+        if (x == "this_is_a_really_secure_password") {
+          window.open("/weirdpage.php?pwd=doublepassword")
+        }
+      }
+    </script>
+ ```
 
 Mình đã thử nhập và được thông báo là trang không tồn tại, cứ nghĩ là sai nhưng khi check `source` của trang đó thì được flag.
 
