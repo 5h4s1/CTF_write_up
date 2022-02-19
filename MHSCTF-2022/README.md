@@ -84,9 +84,18 @@ Nhập 2 số từ 1 đến 100 nếu trùng với `Favorite Number` thì có fl
 
 Mình ngại viết script nên dùng Burp Suite.
 
-Sau 2 phút chạy thì cúng ra flag:
+Sau 2 phút chạy thì cũng ra được flag:
 
 FLAG: `flag{pur3_s7r3ngth}`
 
 # Practice For School
 
+Đề bài:
+
+![image](https://user-images.githubusercontent.com/96786536/154809233-57512d49-d2ad-4364-8449-73b3f1ab5be6.png)
+
+Đây là bài làm mình tốn nhiều thời gian nhất vì đi sai hướng.
+
+Đầu tiên mình không để ý tên URL, sau khi để ý thì thấy URL này khồn giống với các URL của bài khác, tra google thì mới biết được đấy là một trang học tập giống kiểu Kahoot hay Quizz,... Mình tra google xem có cheat nào để tăng tốc video hay bỏ qua video không, sau một hồi thử tăng speed video lên thì cũng có vẻ không khả thi, quay ra tìm cách bỏ qua video, mình đã làm thử theo video này và đã lấy được flag: `https://www.youtube.com/watch?v=8KP-CmZSm_w`
+
+FLAG: `flag{th1s_15_a_us3ful_expl0it_f0r_sch00l}`
