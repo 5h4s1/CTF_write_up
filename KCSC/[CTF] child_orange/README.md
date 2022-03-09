@@ -20,7 +20,7 @@
 ?> 
 ```
 
-Rồi phân tích `source`, thì trông source có vẻ filter khá là nhiều. Tìm cách để có thể lấy được flag nào. Nhìn thấy dòng include $url có vẻ là chúng ta cần đọc file qua include.
+Rồi phân tích `source`, thì trông source có vẻ filter khá là nhiều. Tìm cách để có thể lấy được flag nào. Nhìn thấy dòng include $url có vẻ là chúng ta cần đọc file qua include -> Có thể là LFI hoặc RCE.
 
 Vậy làm cách nào để có thể qua được cả đống filter thế kia. Đầu tiên mình nghĩ đến việc bypass `parse_url` vì hôm trước có làm một bài như vậy. Tìm trên mạng, tìm thấy các cách như dử dụng `//` hay là `@`, `#` các thứ nhưng chốt lại là chả cái nào qua được cái ```if(preg_match("/@|#|\(|\)|\\$|`|'|\"|_|{|}|\?/",$url)) exit("you are not orange");```.
 
@@ -32,7 +32,7 @@ Ok bypass tiếp cái thứ hai thôi. Để bypass qua cái thứ hai mình đ�
 
 ![image](https://user-images.githubusercontent.com/96786536/157479904-1ee50f23-09d6-400f-b3c4-bb7b1afb6d7c.png)
 
-Ok nhưng nó vẫn báo là `invalid host or port`. Rồi để xem nó `parse_url` trả về cái gì sau kho mình up payload nên thì mình đã chạy trên local và được:
+Ok nhưng nó vẫn báo là `invalid host or port`. Rồi để xem nó `parse_url` trả về cái gì sau khi mình up payload lên, thì mình đã chạy trên local và được:
 
 ![image](https://user-images.githubusercontent.com/96786536/157480691-555e1e20-706b-4c72-9917-3176f2db87f0.png)
 
@@ -40,7 +40,7 @@ Có vẻ là hàm parse_url trả về schema là `data` và host lại là `htt
 
 ![image](https://user-images.githubusercontent.com/96786536/157481397-0925cb91-a85e-4462-bfd4-02ed1e3c8919.png)
 
-Thêm `http://nhienit.kma:2010` vào phần path là đã thành công bypass qua tất cả payload rồi.
+Thêm `http://nhienit.kma:2010` vào phần path là đã thành công bypass qua tất cả rồi.
 
 Đây là payload cuối cùng để có thể `RCE`:
 
