@@ -114,3 +114,8 @@ Thực hiện command thôi:
 
 ![image](https://user-images.githubusercontent.com/96786536/157678507-7b13fdc7-0362-4a67-b75f-72173a23690c.png)
 
+Ok có tên file chứ flag r thì ta đọc file thôi. Vì đầu vào của `command` không quá 5 nên mình sử dụng `m4`:
+
+![image](https://user-images.githubusercontent.com/96786536/157690010-d467907e-9404-4d4f-9f9d-526b283449dc.png)
+
+Nice -> có flag
