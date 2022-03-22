@@ -114,4 +114,16 @@ public static function validateAddress($address, $patternselect = null)
     }
 ```
 
-Chúng ta để ý đến if thứ hai sẽ gọi hàm `is_callable` để check xem `$patternselect1` có phải là hàm hay phương thức thực hiện được không. Nếu `is_callable` đúng thì sẽ gọi đến hàm `call_user_func` để thực thi hàm `$patternselect` ($_GET["type"]) và tham số là `$address` 
+Chúng ta để ý đến if thứ hai sẽ gọi hàm `is_callable` để check xem `$patternselect1` có phải là hàm hay phương thức thực hiện được không. Nếu `is_callable` đúng thì sẽ gọi đến hàm `call_user_func` để thực thi hàm `$patternselect` ($_GET["type"]) và tham số là `$address` ($_POST["email"]).
+
+Rồi sau khi đã hiểu và tìm được chỗ có thể khai thác thì chúng ta bắt đầu khai thác:
+
+Thử payload với `$_GET["type"]=system` và `$_POST["email"]=ls` xem có thực thi hàm system được không và được:
+
+![image](https://user-images.githubusercontent.com/96786536/159439991-14e88ea3-a475-4aa2-a1e1-dde198e7bd47.png)
+
+-> RCE thành công. Rồi đọc flag thôi:
+
+![image](https://user-images.githubusercontent.com/96786536/159440124-63bc06b1-aace-4e88-9509-9be45485993f.png)
+
+
