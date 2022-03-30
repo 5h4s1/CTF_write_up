@@ -1,4 +1,4 @@
-#TSULOTT2 (MAWC)
+# TSULOTT2 (MAWC)
 
 script:
 
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     main()
 ```
 
-#More Cookie (picoCTF)
+# More Cookie (picoCTF)
 
 ```python3
 import requests
