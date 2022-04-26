@@ -261,7 +261,7 @@ for a in arr:
 
 ```
 
-Sau khi chạy nó sẽ ra 1 đống các chuỗi khác nhau, lọc 1 hồi thì được các phân của FLAG như sau:
+Sau khi chạy nó sẽ ra 1 đống các chuỗi khác nhau, lọc 1 hồi thì được các phần của FLAG như sau:
 
 ```
 hy}
@@ -274,4 +274,36 @@ Crypt
 KCSC{
 ```
 Ghép lại và được flag: `KCSC{X0R_1s_1mp0rt4nt_1n_Crypt0gr4phy}`
+
+## Ent_teleport Flag [AGAIN]!
+
+Description:
+
+Khá giống với bài trước nhưng ở bài này đã không thể SSTI được vì đã bị filter thật rồi.
+
+Solution:
+
+Chúng ta tiếp tục phân tích các đoạn code mà chúng ta chưa phân tích.
+
+Đó là chức năng tạo highlight, code, url, screenshot của note.
+
+Chú ý ta thấy ở chức nang screenshot thì sẽ tạo ra 1 webdriver rồi truy cập vào url rồi chụp màn hình nội dung của trang url đó và in ra màn hình.
+
+![image](https://user-images.githubusercontent.com/96786536/165216789-6ec521cd-8dcb-4e73-8c74-eedd41c1d77d.png)
+
+Có vẻ ở đây bị SSRF vì chúng ta có thể gọi bất cứ url nào vào. Thử với payload của SSRF: `[m:screenshot]file://127.0.0.1/etc/paswd[/m:screenshot]`
+
+Thì ra được ảnh chứa content file `etc/passwd` :
+
+![image](https://user-images.githubusercontent.com/96786536/165217241-c3517124-de51-4035-8113-ae7c50593534.png)
+
+Nhìn vào file Docker mà tác fiar cho ta biết vị trì của file `main.py`. Thực hiện đọc file xem có gì không, thì có được 1 thứ rất quan trong (session_key):
+
+![image](https://user-images.githubusercontent.com/96786536/165217411-9cb9102d-c303-40ac-9503-df4cef843841.png)
+
+Dùng session_key đó để tạo 1 cookie set username=admin là có flag:
+
+![image](https://user-images.githubusercontent.com/96786536/165217878-5efeeb8c-a5e0-4c9b-93e9-aa2f5c752cd8.png)
+
+FLAG; `KCSC{1_just_l34rn_h0w_t0_t3l3p0rt_t0_y0u_<3}`
 
