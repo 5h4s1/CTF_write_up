@@ -16,11 +16,11 @@ List Chall:
 ## Ent_teleport Flag
 
 
-Description:
+### Description:
 
 Đây là 1 website có chức năng nhập vào tên người dùng và đăng nhập, sau đó sẽ có chức năng tạo các note cho người dùng.
 
-Solution:
+### Solution:
 
 Trang web bị dính lỗi SSTI:
 
@@ -71,11 +71,11 @@ def note():
  
  ## Client-side Check
  
- Description:
+ ### Description:
  
  1 trang web có chức năng nhập vào 1 số, check nếu số đó trùng với lucky number thì sẽ có flag, còn không có thì sẽ in ra các dòng khác nhau.
  
- Solution:
+ ### Solution:
 
 Vì tên của bài là `Client-side Check` nên mình sẽ thực hiện check source ở phía client xem có gì không.
 
@@ -141,11 +141,11 @@ Flag: `KCSC{Pl3as3_d0nt_st0r3_th3_s3cr3t_k3y_1n_cl1ent-s1d3_scr1pt!!}`
 
 ## Host_timescale 9999
 
-Description:
+### Description:
 
 1 trang web có chức năng upload file image hoặc zip, nếu là file image thì nó sẽ thực hiện lưu vào và in ra list trên trang chủ.
 
-Solution:
+### Solution:
 
 Phân tích source có 1 số điểm đáng chú ý là: đầu tiên là trang web sẽ filter extension bằng white list các extension image, tiếp theo nếu là file zip thì nó sẽ thực hiên lưu file zip rồi sau đó unzip file đó, sau khi unzip thì sẽ xóa các file vừa được unzip.
 
@@ -208,11 +208,11 @@ FLAG: `KCSC{Brrrrrrrrr_Beyond_the_sp33d0fLight____}`
 
 ## XOXO
 
-Description:
+### Description:
 
 Đây là 1 bài crypto mình làm được. Author cho 1 file python có chức năng mã hóa.
 
-Solution:
+### Solution:
 
 ```python
 from secret import FLAG
@@ -288,11 +288,11 @@ Ghép lại và được flag: `KCSC{X0R_1s_1mp0rt4nt_1n_Crypt0gr4phy}`
 
 ## Ent_teleport Flag [AGAIN]!
 
-Description:
+### Description:
 
 Khá giống với bài trước nhưng ở bài này đã không thể SSTI được vì đã bị filter thật rồi.
 
-Solution:
+### Solution:
 
 Chúng ta tiếp tục phân tích các đoạn code mà chúng ta chưa phân tích.
 
@@ -320,3 +320,24 @@ FLAG; `KCSC{1_just_l34rn_h0w_t0_t3l3p0rt_t0_y0u_<3}`
 
 ## Request as a service
 
+### Description:
+
+Đây là 1 web có chức năng là nhập vào 1 url sau đó web sẽ thực hiện curl bào trang web mình vừa nhập. Nếu chúng ta truy cập ở local host và các header thỏa mã yêu cầu của đề bài thì sẽ có được flag.
+
+### Solution:
+
+Vì có hint từ tác giả là sử dụng `gopher protocol` nên mình focus vào đó luôn. Lên mạng tìm xem gopher có thể làm được gì không, thì thấy nó có vẻ có thể sử dụng kết hợp với CRLF để tạo ra 1 requests mới. Mọi người có thể tham khảo tại [đây.](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Request%20Forgery#gopher) 
+
+Mình đã tạo ra 1 payload như sau: `gopher://127.0.0.1:80/_GET%20%2F%20HTTP%2F1.1%0D%0AHost%3A%20127.0.0.1%0D%0AX-flag%3A%20KCSC%0D%0AX-Key%3A%20K3Y_t0_G3t_flaggggg%0D%0A` rồi gửi lên server. Nhưng chả thu lại được gì cả.
+
+Sau khi kết thúc giải mình đã hỏi các anh em xã hội của mình thì biết là phải encode url 2 lần mới được. Lý do thì là sau khi gửi request lên lần đầu tiên sẽ thực hiện decode rồi, vì vậy mình cần 1 lần encode nữa để khi server curl mới đúng payload.
+
+Pyload get flag: `%67%6f%70%68%65%72%3a%2f%2f%31%32%37%2e%30%2e%30%2e%31%3a%38%30%2f%5f%47%45%54%25%32%30%25%32%46%25%32%30%48%54%54%50%25%32%46%31%2e%31%25%30%44%25%30%41%48%6f%73%74%25%33%41%25%32%30%31%32%37%2e%30%2e%30%2e%31%25%30%44%25%30%41%58%2d%66%6c%61%67%25%33%41%25%32%30%4b%43%53%43%25%30%44%25%30%41%58%2d%4b%65%79%25%33%41%25%32%30%4b%33%59%5f%74%30%5f%47%33%74%5f%66%6c%61%67%67%67%67%67%25%30%44%25%30%41`.
+
+![image](https://user-images.githubusercontent.com/96786536/165259465-097db561-8a36-4360-a712-a0a81bbfa666.png)
+
+Đây là 1 bài mình khá tiếc khi không làm được trong thời gian của giải, nhưng không sao mình đã học được nhiều thứ từ nó.
+
+FLAG: `KCSC{Make_HTTP_Request_With_Gopher}`
+
+Nếu mình giải thêm được bài nào nữa mình sẽ update tại đây nha. Cảm ơn mọi người đã đón đọc.
