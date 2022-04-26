@@ -10,13 +10,15 @@ List Chall:
   - [Host_timescale 9999](#host_timescale-9999)
   - [XOXO](#xoxo)
   - [Ent_teleport Flag [AGAIN]!](#ent_teleport-flag-again)
+  - [Request as a service](#request-as-a-service)
+
 
 ## Ent_teleport Flag
 
 
 Description:
 
-Đây là 1 website có chức năng nhập vào tên người dùng và đăng nhập, sau đó sẽ có chức nang tạo các note cho người dùng.
+Đây là 1 website có chức năng nhập vào tên người dùng và đăng nhập, sau đó sẽ có chức năng tạo các note cho người dùng.
 
 Solution:
 
@@ -24,7 +26,7 @@ Trang web bị dính lỗi SSTI:
 
 ![image](https://user-images.githubusercontent.com/96786536/165206597-faec2314-2d8c-440d-aa57-df6b96aea696.png)
 
-Dùng payload để lấy Flag: `{{ self._TemplateReference__context.cycler.__init__.__globals__.os.popen('env').read() }}`. Mình dùng ENV để lấy flag vì trong file Docker của source thì author đã cho FLAG và ENV.
+Dùng payload để lấy Flag: `{{ self._TemplateReference__context.cycler.__init__.__globals__.os.popen('env').read() }}`. Mình dùng ENV để lấy flag vì trong file Docker của source thì author đã cho FLAG vào ENV.
 
 Có Flag:
 
@@ -315,4 +317,6 @@ Dùng session_key đó để tạo 1 cookie set username=admin là có flag:
 ![image](https://user-images.githubusercontent.com/96786536/165217878-5efeeb8c-a5e0-4c9b-93e9-aa2f5c752cd8.png)
 
 FLAG; `KCSC{1_just_l34rn_h0w_t0_t3l3p0rt_t0_y0u_<3}`
+
+## Request as a service
 
