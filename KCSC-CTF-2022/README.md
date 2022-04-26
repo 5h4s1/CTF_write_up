@@ -2,6 +2,14 @@
 
 Link source: https://drive.google.com/drive/folders/18Op2kK25J82G9WHncGvSAJ_YaK7LEAFP?usp=sharing
 
+List Chall:
+
+- [KCSC-CTF-2022](#kcsc-ctf-2022)
+  - [Ent_teleport Flag](#ent_teleport-flag)
+  - [Client-side Check](#client-side-check)
+  - [Host_timescale 9999](#host_timescale-9999)
+  - [XOXO](#xoxo)
+  - [Ent_teleport Flag [AGAIN]!](#ent_teleport-flag-again)
 
 ## Ent_teleport Flag
 
@@ -71,7 +79,7 @@ Vì tên của bài là `Client-side Check` nên mình sẽ thực hiện check 
 
 Có 1 file nghi ngờ là `index.js`. Khi check file này thì được mã hóa bằng `JSFuck`. Decode `JSFuck` thì được source như sau:
 
-```js
+```javascript
 (event) => {
 	event.preventDefault();
 
