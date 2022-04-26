@@ -312,7 +312,7 @@ Nhìn vào file Docker mà tác fiar cho ta biết vị trì của file `main.py
 
 ![image](https://user-images.githubusercontent.com/96786536/165217411-9cb9102d-c303-40ac-9503-df4cef843841.png)
 
-Dùng session_key đó để tạo 1 cookie set username=admin là có flag:
+Dùng session_key đó để tạo 1 cookie set user=admin là có flag:
 
 ![image](https://user-images.githubusercontent.com/96786536/165217878-5efeeb8c-a5e0-4c9b-93e9-aa2f5c752cd8.png)
 
