@@ -1,7 +1,7 @@
 # KCSC-CTF-2022
 
-* link
-{:toc}
+Link source: https://drive.google.com/drive/folders/18Op2kK25J82G9WHncGvSAJ_YaK7LEAFP?usp=sharing
+
 
 ## Ent_teleport Flag
 
