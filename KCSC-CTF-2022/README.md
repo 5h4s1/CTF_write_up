@@ -1,7 +1,7 @@
 # KCSC-CTF-2022
 
 | Name | Link | Source |
-| Ent_teleport Flag
+| Ent_teleport Flag | 123 | đá |
 
 ## Ent_teleport Flag
 
