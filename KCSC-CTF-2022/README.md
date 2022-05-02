@@ -125,7 +125,7 @@ FLAG; `KCSC{1_just_l34rn_h0w_t0_t3l3p0rt_t0_y0u_<3}`
 
 Khi vào web và thử hết cac chức năng một hồi thì biết được web có chức năng tạo note và lưu trữ và server, có thể xem lại và có 1 trang report để report link cho server. Tiếp tục đọc qua source thì thấy có web còn 1 chức năng nữa đó là tìm kiếm bằng query LIKE của SQL.
 
-### Solutin
+### Solution
 
 Sau khi end giải thì mình hỏi các người anh em xã hội của mình thì biết được trang web bị dính `XS Leaks`. Các bạn có thể tham khảo tại đây để biết thêm về `XS Leaks`.
 
