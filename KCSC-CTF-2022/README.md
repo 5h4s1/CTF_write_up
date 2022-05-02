@@ -11,18 +11,21 @@ List Chall:
   - [Ent_teleport Flag [AGAIN]!](#ent_teleport-flag-again)
     - [Description:](#description-1)
     - [Solution:](#solution-1)
-  - [Client-side Check](#client-side-check)
+  - [Leak me if you can](#leak-me-if-you-can)
     - [Description:](#description-2)
+    - [Solutin](#solutin)
+  - [Client-side Check](#client-side-check)
+    - [Description:](#description-3)
     - [Solution:](#solution-2)
   - [Host_timescale 9999](#host_timescale-9999)
-    - [Description:](#description-3)
+    - [Description:](#description-4)
     - [Solution:](#solution-3)
   - [XOXO](#xoxo)
-    - [Description:](#description-4)
+    - [Description:](#description-5)
     - [Solution:](#solution-4)
   - [Request as a service](#request-as-a-service)
     - [Source:](#source)
-    - [Description:](#description-5)
+    - [Description:](#description-6)
     - [Solution:](#solution-5)
 
 
@@ -120,7 +123,7 @@ FLAG; `KCSC{1_just_l34rn_h0w_t0_t3l3p0rt_t0_y0u_<3}`
 
 Khi vào web và thử hết cac chức năng một hồi thì biết được web có chức năng tạo note và lưu trữ và server, có thể xem lại và có 1 trang report để report link cho server. Tiếp tục đọc qua source thì thấy có web còn 1 chức năng nữa đó là tìm kiếm bằng query LIKE của SQL.
 
-## Solutin
+### Solutin
 
 Sau khi end giải thì mình hỏi các người anh em xã hội của mình thì biết được trang web bị dính `XS Leaks`. Các bạn có thể tham khảo tại đây để biết thêm về `XS Leaks`.
 
