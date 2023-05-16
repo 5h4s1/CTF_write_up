@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  web01:
+    build: ./
+    restart: always
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      - SITE_VERIFY=https://challenges.cloudflare.com/turnstile/v0/siteverify
+      - PASSWD=KCSC
+      - FLAG=KCSC{test}
+      - SITE_KEY=0x4AAAAAAADAAAAAAAAAAAA
+      - SECRET_KEY=0x4AAAAAAAAAAAAAAxnxx
+    ports:
+      - 18000:80

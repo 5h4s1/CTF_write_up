@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Valentine's Card</title>
+    <style>
+      body {
+        text-align: center;
+      }
+      textarea, input {
+        border: dotted 2px #333;
+        margin: 10px;
+        padding: 10px;
+      }
+      body, textarea, input {
+        background-color: #ddd;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Create a Valentines card to send to your loved ones! ❤️</h1>
+    Personalize your card with {{ name }}.
+    <br/>
+    <textarea name="tmpl" form="template" cols="60" rows="50">
+Hello guys {{ name }}
+    </textarea>
+    <form action="/template" method="post" id="template">
+      <input name="name" type="text" placeholder="Name of your loved one">
+      <input type="submit">
+    </form>
+    <script>
+    </script>
+  </body>
+</html>
